@@ -1,8 +1,21 @@
 package parking
 
-class ParkingLot {
+class ParkingLot(spots: Int) {
 
-    private val spots = (1..20).map { Spot(number = it) }
+    private val spots = (1..spots).map { Spot(number = it) }
+
+    fun status() {
+        var isEmpty = true
+        spots.forEach { spot ->
+            if (spot.isBusy) {
+                isEmpty = false
+                println(spot)
+            }
+        }
+        if (isEmpty) {
+            println("Parking lot is empty.")
+        }
+    }
 
     fun park(regNumber: String, color: String) {
         getNotBusySpot()
@@ -18,8 +31,20 @@ class ParkingLot {
 
     private fun getSpot(spotNumber: Int) = spots[spotNumber - 1]
 
+    companion object {
+        fun create(spots: Int): ParkingLot {
+            println("Created a parking lot with $spots spots.")
+            return ParkingLot(spots)
+        }
+    }
+
     data class Spot(val number: Int, private var car: Car? = null) {
         val isBusy get() = car != null
+
+        override fun toString(): String = buildString {
+            append(number)
+            car?.let { append(" $it") }
+        }
 
         fun leave() {
             if (isBusy) {
@@ -36,5 +61,7 @@ class ParkingLot {
         }
     }
 
-    data class Car(val regNumber: String, val color: String)
+    data class Car(val regNumber: String, val color: String) {
+        override fun toString(): String = "$regNumber $color"
+    }
 }
