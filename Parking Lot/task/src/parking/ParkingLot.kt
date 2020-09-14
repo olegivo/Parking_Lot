@@ -17,6 +17,37 @@ class ParkingLot(spots: Int) {
         }
     }
 
+    fun regByColor(color: String) {
+        val result = spots.mapNotNull { it.car }
+                .filter { it.color.equals(color, true) }
+                .map { it.regNumber }
+        if (result.isEmpty()) {
+            println("No cars with color $color were found.")
+        } else {
+            println(result.joinToString())
+        }
+    }
+
+    fun spotByColor(color: String) {
+        val result = spots.filter { it.car?.color.equals(color, true) }
+                .map { it.number }
+        if (result.isEmpty()) {
+            println("No cars with color $color were found.")
+        } else {
+            println(result.joinToString())
+        }
+    }
+
+    fun spotByReg(reg: String) {
+        val result = spots.filter { it.car?.regNumber.equals(reg, true) }
+                .map { it.number }
+        if (result.isEmpty()) {
+            println("No cars with registration number $reg were found.")
+        } else {
+            println(result.joinToString())
+        }
+    }
+
     fun park(regNumber: String, color: String) {
         getNotBusySpot()
                 ?.park(Car(regNumber, color))
@@ -28,7 +59,6 @@ class ParkingLot(spots: Int) {
     }
 
     private fun getNotBusySpot() = spots.firstOrNull { !it.isBusy }
-
     private fun getSpot(spotNumber: Int) = spots[spotNumber - 1]
 
     companion object {
@@ -38,7 +68,7 @@ class ParkingLot(spots: Int) {
         }
     }
 
-    data class Spot(val number: Int, private var car: Car? = null) {
+    data class Spot(val number: Int, var car: Car? = null) {
         val isBusy get() = car != null
 
         override fun toString(): String = buildString {
