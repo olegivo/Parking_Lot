@@ -4,25 +4,13 @@ class ParkingLot {
 
     private val spots = (1..20).map { Spot(number = it) }
 
-    fun processCommand(input: String): Boolean {
-        val split = input.split(' ')
-        val command = split.first().toLowerCase()
-        val parameters = split.drop(1)
-        when (command) {
-            "park" -> park(parameters[0], parameters[1])
-            "leave" -> leave(parameters.first().toInt())
-            "exit" -> return false
-        }
-        return true
-    }
-
-    private fun park(regNumber: String, color: String) {
+    fun park(regNumber: String, color: String) {
         getNotBusySpot()
                 ?.park(Car(regNumber, color))
                 ?: run { println("Sorry, the parking lot is full.") }
     }
 
-    private fun leave(spotNumber: Int) {
+    fun leave(spotNumber: Int) {
         getSpot(spotNumber).leave()
     }
 
