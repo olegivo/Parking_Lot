@@ -1,7 +1,12 @@
 package parking
 
+import java.util.*
+
 fun main() {
-    println("""White car has parked.
-Yellow car left the parking lot.
-Green car just parked here.""")
+    val parkingLot = ParkingLot()
+    val scanner = Scanner(System.`in`)
+    while (scanner.hasNextLine()) {
+        val command = scanner.nextLine()
+        if (!parkingLot.processCommand(command)) break
+    }
 }
